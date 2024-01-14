@@ -26,6 +26,12 @@ namespace ServerCore
                 // _locked의 original 값이 false인지를 확인 후 1로 교체, 반환 값은 original
                 if (Interlocked.CompareExchange(ref _locked, 1, 0) == 0)
                     break;
+
+                Thread.Sleep(1); // 무조건 휴식, 1ms
+                Thread.Sleep(0); // 조건부 양보, 나보다 우선순위가 낮은 애들한테는 양보 불가 => 우선순위가 나보다 같거나 높은 쓰레드가 없으면 다시 본인한테
+                Thread.Yield(); // 관대한 양보, 지금 실행이 가능한 쓰레드가 있으면 실행 => 없으면 대기
+                // 무거운 작업의 경우 Yield가 합리적일 가능성이 높다.
+                // 다만 Thread 전환의 경우 커널에 진입하는 등 새로운 부하가 생기기 때문에 오히려 손해일 수도 있다.
             }
         }
 
