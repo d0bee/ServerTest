@@ -12,3 +12,4 @@ C:\Users\gusdu\Desktop\인프런\Unity_server\Server\ServerCore\obj\Release\net8
 C:\Users\gusdu\Desktop\인프런\Unity_server\Server\ServerCore\obj\Release\net8.0\ServerCore.pdb
 C:\Users\gusdu\Desktop\인프런\Unity_server\Server\ServerCore\obj\Release\net8.0\ServerCore.genruntimeconfig.cache
 C:\Users\gusdu\Desktop\인프런\Unity_server\Server\ServerCore\obj\Release\net8.0\ref\ServerCore.dll
+C:\Users\gusdu\Desktop\인프런\Unity_server\Server\ServerCore\obj\Release\net8.0\ServerCore.sourcelink.json
