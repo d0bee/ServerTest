@@ -8,45 +8,41 @@ using System.Threading;
 // Interlocked.Exchange와 같이 반환값을 확인하여 교체 시 _locked 값이 false인지를 확인, 제대로 된 Lock을 획득하여 SpinLock을 구현하였다.
 namespace ServerCore
 {
-    
+
     class Program
     {
-        // Mutex.WaitOne(), Mutex.ReleaseMutex() 등을 사용하여 임계 구역을 만들 수 있다. 이 또한 커널에 접근하기 때문에 부하가 큰 방식이다.
-
-        static int num = 0;
-        static Mutex _lock = new Mutex();
-
-        static void Thread_1()
+        static object _lock = new object();
+        static SpinLock _lock2 = new SpinLock();
+        static ReaderWriterLockSlim _lock3 = new ReaderWriterLockSlim();
+        
+        // 99%
+        static Reward GetRewardById(int id)
         {
-            for (int i = 0; i < 10000; i++)
-            {
-                _lock.WaitOne();
-                num++;
-                _lock.ReleaseMutex();
-            }
+            _lock3.EnterReadLock();
+
+            _lock3.ExitReadLock();
+
+            return null;
+        }
+        
+        // 1%
+        static void AddReward(Reward reward) 
+        {
+            _lock3.EnterWriteLock();
+
+            _lock3.ExitWriteLock();
+        }
+        
+        class Reward
+        {
         }
 
-        static void Thread_2()
+        static void Main(string[] args) 
         {
-            for (int i = 0; i < 10000; i++)
-            {
-                _lock.WaitOne();
-                num--;
-                _lock.ReleaseMutex();
+            lock (_lock)
+            { 
+
             }
-        }
-
-        static void Main(string[] args)
-        {
-            Task t1 = new Task(Thread_1);
-            Task t2 = new Task(Thread_2);
-
-            t1.Start();
-            t2.Start();
-
-            Task.WaitAll(t1, t2);
-
-            Console.WriteLine(num);
         }
     }
 }
